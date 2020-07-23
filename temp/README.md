@@ -1,0 +1,1 @@
+This temp folder contains files that are used for reference during development, and will not be included within the final product.
