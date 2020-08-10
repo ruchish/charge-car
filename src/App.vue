@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HereMap ref="here-map" width="100vw" height="100vh"/>
+    <GoogleMap ref="google-map" />
   </div>
 </template>
 
@@ -8,22 +8,22 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import HereMap from "@/components/HereMap.vue";
-import { environment } from "./environment";
+import { environment } from "@/environment";
+
+import GoogleMap from "@/components/google_maps/GoogleMap.vue";
 
 @Component({
-  components: {
-    HereMap,
-  },
+  components: { GoogleMap },
 })
 export default class App extends Vue {
+  private _map!: GoogleMap;
+
   /**
    * Vue lifecycle callback.
    * @see https://vuejs.org/v2/guide/instance.html#Lifecycle-Diagram
    */
   mounted() {
-    const hereMap: HereMap = this.$refs["here-map"] as HereMap;
-    hereMap.initialize("temp");
+    this._map = this.$refs["google-map"] as GoogleMap;
   }
 }
 </script>
@@ -39,5 +39,9 @@ export default class App extends Vue {
 body {
   margin: 0;
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
+}
+
+.google-map {
+  height: 100vh;
 }
 </style>
