@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-      Nav-bar
+    <UIButton text="Toggle Info Panel (test)" color="dark" @click="toggleInfoPanel" />Nav-bar
   </div>
 </template>
 
@@ -8,8 +8,14 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component
-export default class Navbar extends Vue {}
+import UIButton from "@/components/ui/UIButton.vue";
+
+@Component({ components: { UIButton } })
+export default class Navbar extends Vue {
+  toggleInfoPanel() {
+    document.getElementsByClassName("info-panel")[0].toggleAttribute("opened");
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,8 +2,8 @@
   <div id="app">
     <Navbar />
     <main>
+      <InfoPanel/>
       <GoogleMap ref="google-map" />
-      <InfoPanel />
     </main>
   </div>
 </template>
@@ -24,19 +24,22 @@ import InfoPanel from "@/components/InfoPanel.vue";
   },
 })
 export default class App extends Vue {
+  /**
+   * Determines if the app is in a mobile-container view by reading the size of the window width and height.
+   */
+  public static get isMobile(): boolean {
+    return window.outerWidth <= 1024 || window.outerHeight <= 1024;
+  }
+
   private _map!: GoogleMap;
 
   /**
    * Vue lifecycle callback.
    * @see https://vuejs.org/v2/guide/instance.html#Lifecycle-Diagram
    */
-  mounted() {
+  private mounted() {
     this._map = this.$refs["google-map"] as GoogleMap;
-    this._map.mapOptions = {
-      zoomControl: false,
-      streetViewControl: false,
-      fullscreenControl: false,
-    };
+    this._map.mapOptions = { fullscreenControl: false };
   }
 }
 </script>
@@ -44,6 +47,7 @@ export default class App extends Vue {
 <style lang="scss">
 @import "@/theme/variables.scss";
 @import "@/theme/fonts/all.scss";
+@import "@/theme/responsive.scss";
 
 * {
   box-sizing: border-box;
@@ -57,12 +61,20 @@ body {
 #app {
   position: relative;
   width: 100vw;
-  height: calc(100vh - 7vh);
 
   main {
     position: relative;
+    display: flex;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 7vh);
+  }
+}
+
+@include mobileView() {
+  #app {
+    main {
+      flex-flow: column-reverse;
+    }
   }
 }
 </style>

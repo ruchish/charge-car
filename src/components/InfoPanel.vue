@@ -1,5 +1,5 @@
 <template>
-  <div class="info-panel">
+  <div class="info-panel" :opened="opened" ref="info-panel" tabindex="-1" @click="focus" @scroll="focus">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla maximus at nibh nec ornare. Nullam quis vestibulum est. Nullam convallis quis erat in auctor. Morbi in eros elementum risus feugiat porta. Ut aliquam odio est, non posuere dui semper quis. Nulla aliquam mauris at sodales cursus. Praesent non arcu sit amet libero posuere pellentesque vitae sollicitudin metus. Sed non metus leo. Aenean vitae accumsan arcu. Quisque malesuada laoreet enim, eu tempus nibh. Duis et nisl pretium, aliquet sem sed, interdum libero. Praesent posuere est vitae ante accumsan, at maximus ligula elementum. Vivamus sed ultrices tellus, sit amet porttitor turpis. Ut tincidunt ex quis orci faucibus accumsan. Integer at leo risus.
     Duis condimentum, augue eget porttitor efficitur, turpis lorem pretium est, ut luctus enim ipsum in neque. Aliquam at felis eu tortor pulvinar finibus. Fusce malesuada, arcu sit amet feugiat convallis, orci nisl feugiat nisi, ac venenatis velit neque non ante. Suspendisse euismod dui dolor, sed tristique odio posuere pellentesque. Morbi pulvinar quis lacus eget efficitur. Suspendisse ut libero vitae erat feugiat pretium. Etiam nisi odio, semper id libero quis, convallis tempor velit. Phasellus bibendum tortor vitae sagittis imperdiet.
     Donec pulvinar diam dui. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc ante tellus, consequat vitae dignissim in, dictum non nisl. Nullam porta ipsum finibus, blandit nunc eget, egestas lectus. Pellentesque sagittis, tellus sed tempus pharetra, augue risus pretium turpis, ac luctus enim ante sit amet velit. Quisque magna ipsum, sodales quis tincidunt in, ultricies eu sem. Ut eu purus quis magna bibendum ultrices. Maecenas libero libero, sollicitudin a sapien at, fringilla placerat lectus. Etiam mollis metus tellus, vitae rhoncus lacus pretium eget. Morbi ac interdum augue. Morbi eu quam in metus feugiat laoreet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus in maximus diam. Sed quis dolor rhoncus, fermentum lacus et, rutrum purus. Quisque eget velit a est aliquet luctus nec eget purus. Pellentesque vel augue nec nibh congue posuere.
@@ -18,31 +18,62 @@ import Vue from "vue";
 import Component from "vue-class-component";
 
 @Component
-export default class InfoPanel extends Vue {}
+export default class InfoPanel extends Vue {
+  public opened: boolean = false;
+
+  private _elRef!: HTMLDivElement;
+
+  /**
+   * Vue lifecycle callback.
+   * @see https://vuejs.org/v2/guide/instance.html#Lifecycle-Diagram
+   */
+  private mounted() {
+    this._elRef = this.$refs["info-panel"] as HTMLDivElement;
+    this.opened = this.$el.getAttribute("opened") != null;
+  }
+
+  private focus() {
+    (this._elRef as any).focus();
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@/theme/responsive.scss";
 
 .info-panel {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  min-width: 400px;
-  width: 25vw;
+  min-width: 0px;
+  width: 0vw;
   max-width: 100vw;
   height: 100%;
   background-color: var(--color-secondary);
+  outline: none;
   overflow: auto;
+  transition: 0.25s;
+  pointer-events: none;
+
+  &[opened] {
+    min-width: 400px;
+    width: 30vw;
+    pointer-events: all;
+  }
 }
 
 @include mobileView() {
   .info-panel {
-    position: relative;
-    min-width: auto;
     width: 100%;
-    max-height: 50vh;
-    transform: translateY(-25%);
+    height: 0vh;
+    pointer-events: all;
+
+    &[opened] {
+      width: inherit;
+      height: 15vh;
+      pointer-events: all;
+
+      &:focus {
+        height: 100vh;
+      }
+    }
   }
 }
 </style>
