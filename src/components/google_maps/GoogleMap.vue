@@ -5,7 +5,7 @@
       :zoom="zoom"
       :options="mapOptions"
       map-type-id="terrain"
-      style="width: 100%; height: 100%"
+      style="width: inherit; height: inherit"
     ></GmapMap>
   </div>
 </template>
@@ -16,7 +16,6 @@ import Component from "vue-class-component";
 
 import MapOptions from "./interfaces/MapOptions";
 import LatLng from "./interfaces/LatLng";
-import { Prop } from "vue-property-decorator";
 
 @Component
 export default class GoogleMap extends Vue {
@@ -27,4 +26,8 @@ export default class GoogleMap extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.google-map {
+  width: 100%;
+  height: 100%;
+}
 </style>

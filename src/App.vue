@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <GoogleMap ref="google-map" />
+    <Navbar />
+    <main>
+      <GoogleMap ref="google-map" />
+      <InfoPanel />
+    </main>
   </div>
 </template>
 
@@ -8,12 +12,16 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-import { environment } from "@/environment";
-
+import Navbar from "@/components/Navbar.vue";
 import GoogleMap from "@/components/google_maps/GoogleMap.vue";
+import InfoPanel from "@/components/InfoPanel.vue";
 
 @Component({
-  components: { GoogleMap },
+  components: {
+    Navbar,
+    GoogleMap,
+    InfoPanel,
+  },
 })
 export default class App extends Vue {
   private _map!: GoogleMap;
@@ -24,6 +32,11 @@ export default class App extends Vue {
    */
   mounted() {
     this._map = this.$refs["google-map"] as GoogleMap;
+    this._map.mapOptions = {
+      zoomControl: false,
+      streetViewControl: false,
+      fullscreenControl: false,
+    };
   }
 }
 </script>
@@ -41,7 +54,15 @@ body {
   font-family: "Quicksand", Helvetica, Arial, sans-serif;
 }
 
-.google-map {
-  height: 100vh;
+#app {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 7vh);
+
+  main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
