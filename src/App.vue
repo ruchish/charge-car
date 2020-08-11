@@ -2,7 +2,7 @@
   <div id="app">
     <Navbar />
     <main>
-      <InfoPanel/>
+      <InfoPanel ref="info-panel" opened/>
       <GoogleMap ref="google-map" />
     </main>
   </div>
@@ -67,6 +67,7 @@ body {
     display: flex;
     width: 100%;
     height: calc(100vh - 7vh);
+    background-color: var(--color-primary);
   }
 }
 

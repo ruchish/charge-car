@@ -12,6 +12,9 @@ import UIButton from "@/components/ui/UIButton.vue";
 
 @Component({ components: { UIButton } })
 export default class Navbar extends Vue {
+  /**
+   * TEMPORARY TEST
+   */
   toggleInfoPanel() {
     document.getElementsByClassName("info-panel")[0].toggleAttribute("opened");
   }
